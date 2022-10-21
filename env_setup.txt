@@ -1,4 +1,5 @@
-# conda create -n myapp python=3.9
+# 20221021
+# conda create -n myapp python
 # conda activate myapp
-# pip install pyqtgraph
+# pip install pyqtgraph tifffile opencv-python matplotlib jupyter pyqt5
 

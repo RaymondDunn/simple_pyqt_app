@@ -1,8 +1,10 @@
-from ctypes import alignment
-from pyqtgraph.Qt import QtGui, QtCore
+# from pyqtgraph.Qt import QtGui, QtCore
+# from PyQt5 import QtGui, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
+from pyqtgraph import PlotWidget
+
 import pyqtgraph as pg
 import numpy as np
-from thirdparty import fastsmooth
 import os
 import pickle
 import json
@@ -12,33 +14,35 @@ import tifffile as tf
 class MyApp:
     
     # sometimes, putting gui code in __init__ creates problems (e.g. serialization w/r/t subprocesses)
-    def __init__(self):
-        self.initialize_display()
+    def __init__(self, args={}):
+        self.intialize_display()
 
+    # create gui window
     def intialize_display(self):
         
         # make app, we do it this way in case an instance of the app is
         # already running (like if using in jupyter notebook)
-        self.app = QtCore.QCoreApplication.instance()
-        if self.app is None:
-            self.app = QtGui.QApplication([])
+        #self.app = QtCore.QCoreApplication.instance()
+        #if self.app is None:
+        #    self.app = QtGui.QApplication([])
+        self.app = pg.mkQApp()
 
         # it should exit on close per  https://stackoverflow.com/questions/57408620/cant-kill-pyqt-window-after-closing-it-which-requires-me-to-restart-the-kernal/58537032#58537032
         self.app.setQuitOnLastWindowClosed(True)
 
         # app has a main window
-        self.window = QtGui.QWidget()
+        self.window = QtWidgets.QWidget()
         self.window.setWindowTitle(
-            "Neural State Classifier: {}".format(self.dc.fname_root)
+            "Example PyQt app"
         )
         self.window.resize(1400, 800)
 
         # window has a grid layout (easy to add widgets/items to)
-        self.window_grid = QtGui.QGridLayout()
+        self.window_grid = QtWidgets.QGridLayout()
 
         # add other grids/widgets into window
         self.plot_graphics_widget = pg.GraphicsLayoutWidget()
-        self.command_panel_grid = QtGui.QGridLayout()
+        self.command_panel_grid = QtWidgets.QGridLayout()
 
 
         ##################################
@@ -62,7 +66,10 @@ class MyApp:
         # show the window
         self.window.show()
 
+        # begin event loop
+        self.app.exec_()
+
 
 # standalone testing
-if __name__ == "__main__":
-    
+#if __name__ == "__main__":
+myapp = MyApp()
