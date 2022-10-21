@@ -1,0 +1,4 @@
+# conda create -n myapp python=3.9
+# conda activate myapp
+# pip install pyqtgraph
+
