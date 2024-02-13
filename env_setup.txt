@@ -1,5 +1,5 @@
-# 20221021
+# 20240213
 # conda create -n myapp python
 # conda activate myapp
-# pip install pyqtgraph tifffile opencv-python matplotlib jupyter pyqt5
+# pip install pyqtgraph tifffile opencv-python matplotlib jupyter pyqt6
 

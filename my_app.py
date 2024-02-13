@@ -1,14 +1,7 @@
-# from pyqtgraph.Qt import QtGui, QtCore
-# from PyQt5 import QtGui, QtCore
-from PyQt5 import QtWidgets, QtCore, QtGui
-from pyqtgraph import PlotWidget
+from pyqtgraph.Qt import QtGui, QtCore, QtWidgets
 from datetime import datetime
 import pyqtgraph as pg
-import numpy as np
-import os
-import pickle
 import json
-import tifffile as tf
 import cv2
 
 # single-window app
@@ -37,7 +30,7 @@ class MyApp:
         #    self.app = QtGui.QApplication([])
         self.app = pg.mkQApp()
 
-        # it should exit on close per  https://stackoverflow.com/questions/57408620/cant-kill-pyqt-window-after-closing-it-which-requires-me-to-restart-the-kernal/58537032#58537032
+        # it should exit on close per https://stackoverflow.com/questions/57408620/cant-kill-pyqt-window-after-closing-it-which-requires-me-to-restart-the-kernal/58537032#58537032
         self.app.setQuitOnLastWindowClosed(True)
 
         # app has a main window
@@ -86,15 +79,15 @@ class MyApp:
         self.frame_slider_label = QtWidgets.QLabel('frame slider: {}/{}'.format(self.current_frame_ndx, self.video_length))
 
         # slider
-        self.video_frame_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal)
+        self.video_frame_slider = QtWidgets.QSlider(QtCore.Qt.Orientation.Horizontal)
         self.video_frame_slider.setMinimum(0)
         self.video_frame_slider.setMaximum(self.video_length - 1)
         self.video_frame_slider.setTickInterval(1)
-        self.video_frame_slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
+        # self.video_frame_slider.setTickPosition(QtWidgets.QSlider.TicksBelow) # doesn't work in pyqt6... maybe pyside only?
         self.video_frame_slider.valueChanged.connect(self.refresh_dashboard)
 
         # add qlabel and slider to command panel
-        self.command_panel_grid.addWidget(self.frame_slider_label, 0,0,1,2, alignment=QtCore.Qt.AlignCenter)
+        self.command_panel_grid.addWidget(self.frame_slider_label, 0,0,1,2, alignment=QtCore.Qt.AlignmentFlag.AlignCenter)
         self.command_panel_grid.addWidget(self.video_frame_slider, 1,0,1,2)
 
 
@@ -108,7 +101,7 @@ class MyApp:
 
         #####################################################################
 
-        # assemble hierarchical containers
+        # assemble hierarchical containers for window
         # add plot graphics widget and command panel to window grid
         self.window_grid.addWidget(self.plot_graphics_widget)
         self.window_grid.addItem(self.command_panel_grid)
@@ -123,7 +116,7 @@ class MyApp:
         self.refresh_dashboard()
 
         # begin event loop
-        self.app.exec_()
+        self.app.exec()
 
     # helper to load video
     def load_video(self):
